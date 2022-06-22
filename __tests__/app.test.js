@@ -25,6 +25,15 @@ describe('backend-express-template routes', () => {
       .send(mockUser);
     expect(res.status).toEqual(200);
   });
+  it('signs out an existing user', async () => {
+    await request(app).post('/api/v1/users').send(mockUser);
+    await request(app)
+      .post('/api/v1/users/sessions')
+      .send(mockUser);
+    const res = await request(app).delete('/api/v1/users/sessions');
+    expect(res.status).toEqual(200);
+    expect(res.text).toEqual('Signed out successfully!');
+  });
   afterAll(() => {
     pool.end();
   });
