@@ -32,7 +32,7 @@ describe('backend-express-template routes', () => {
       .send(mockUser);
     const res = await request(app).delete('/api/v1/users/sessions');
     expect(res.status).toEqual(200);
-    expect(res.text).toEqual('Signed out successfully!');
+    expect(res.body.message).toBe('Signed out successfully!');
   });
   afterAll(() => {
     pool.end();
