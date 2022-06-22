@@ -37,7 +37,7 @@ describe('backend-express-template routes', () => {
   it('returns a list of secrets on GET', async () => {
     const res = await request(app).get('/api/v1/secrets');
     expect(res.status).toEqual(200);
-    expect(res.body.length).toBeGreaterThan(0);
+    expect(res.body.length).toBe(0);
   });
   afterAll(() => {
     pool.end();
