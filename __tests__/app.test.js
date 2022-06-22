@@ -34,6 +34,11 @@ describe('backend-express-template routes', () => {
     expect(res.status).toEqual(200);
     expect(res.body.message).toBe('Signed out successfully!');
   });
+  it('returns a list of secrets on GET', async () => {
+    const res = await request(app).get('/api/v1/secrets');
+    expect(res.status).toEqual(200);
+    expect(res.body.length).toBeGreaterThan(0);
+  });
   afterAll(() => {
     pool.end();
   });
