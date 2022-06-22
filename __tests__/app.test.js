@@ -18,6 +18,13 @@ describe('backend-express-template routes', () => {
       .send(mockUser);
     expect(res.body.email).toBe('test@test.com');
   });
+  it('signs in an existing user', async () => {
+    await request(app).post('/api/v1/users').send(mockUser);
+    const res = await request(app)
+      .post('/api/v1/users/sessions')
+      .send(mockUser);
+    expect(res.status).toEqual(200);
+  });
   afterAll(() => {
     pool.end();
   });
