@@ -14,9 +14,9 @@ describe('backend-express-template routes', () => {
   });
   it('creates a new user', async () => {
     const res = await request(app)
-      .post('/users')
+      .post('/api/v1/users')
       .send(mockUser);
-    expect(res.body.user.email).toEqual('test@test.com');
+    expect(res.body.email).toBe('test@test.com');
   });
   afterAll(() => {
     pool.end();
