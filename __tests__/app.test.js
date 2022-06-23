@@ -50,6 +50,16 @@ describe('backend-express-template routes', () => {
       .get('/api/v1/secrets');
     expect(res.body[0].title).toEqual(expected);
   });
+  it('creates a new secret', async () => {
+    await request(app).post('/api/v1/users').send(mockUser);
+    await request(app)
+      .post('/api/v1/users/sessions')
+      .send(mockUser);
+    const res = await request(app)
+      .post('/api/v1/secrets')
+      .send({ title: 'Secret 2', description: 'Secret 2 description' });
+    expect(res.body[1].title).toEqual('Secret 2');
+  });
   afterAll(() => {
     pool.end();
   });
