@@ -34,10 +34,21 @@ describe('backend-express-template routes', () => {
     expect(res.status).toEqual(200);
     expect(res.body.message).toBe('Signed out successfully!');
   });
-  it('returns a list of secrets on GET', async () => {
-    const res = await request(app).get('/api/v1/secrets');
-    expect(res.status).toEqual(200);
-    expect(res.body.length).toBe(0);
+  it('returns a list of secrets for logged in user', async() => {
+    const agent = request.agent(app);
+    const expected = 'Secret 1';
+    let res = await agent
+      .get('/api/v1/secrets');
+    expect(res.status).toEqual(401);
+    await agent
+      .post('/api/v1/users')
+      .send(mockUser);
+    await agent
+      .post('/api/v1/users/sessions')
+      .send(mockUser);
+    res = await agent 
+      .get('/api/v1/secrets');
+    expect(res.body[0].title).toEqual(expected);
   });
   afterAll(() => {
     pool.end();
