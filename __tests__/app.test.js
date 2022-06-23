@@ -51,14 +51,21 @@ describe('backend-express-template routes', () => {
     expect(res.body[0].title).toEqual(expected);
   });
   it('creates a new secret', async () => {
-    await request(app).post('/api/v1/users').send(mockUser);
-    await request(app)
+    const agent = request.agent(app);
+    const expected = 'Secret 2';
+    let res = await agent
+      .get('/api/v1/secrets');
+    expect(res.status).toEqual(401);
+    await agent
+      .post('/api/v1/users')
+      .send(mockUser);
+    await agent
       .post('/api/v1/users/sessions')
       .send(mockUser);
-    const res = await request(app)
+    res = await agent 
       .post('/api/v1/secrets')
       .send({ title: 'Secret 2', description: 'Secret 2 description' });
-    expect(res.body[1].title).toEqual('Secret 2');
+    expect(res.body.title).toEqual(expected);
   });
   afterAll(() => {
     pool.end();
